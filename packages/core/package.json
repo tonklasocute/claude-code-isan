@@ -1,12 +1,12 @@
 {
   "name": "claude-code-isan",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "3D office that shows what Claude Code is doing in real time",
   "private": true,
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
     "start": "node src/cli.js",

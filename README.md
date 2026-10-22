@@ -39,7 +39,7 @@ You pick the look from the **Theme** box in the corner of the page. The speech b
 
 ## 1. The 60-second version
 
-You need Claude Code, Node.js 18 or newer, and git. Then, in a terminal:
+You need Claude Code, Node.js 22 or newer, and git. Then, in a terminal:
 
 ```
 claude plugin marketplace add tonklasocute/claude-code-isan
@@ -77,7 +77,7 @@ You need all of these. Each line shows how to check.
 | Need | How to check | If it is missing |
 |---|---|---|
 | **Claude Code**, signed in and working | `claude --version` prints a version (tested with 2.1.269) | Install it from the official Claude Code documentation |
-| **Node.js 18 or newer** | `node --version` prints `v18` or higher | Install the LTS version from https://nodejs.org |
+| **Node.js 22 or newer** | `node --version` prints `v22` or higher | Install the LTS version from https://nodejs.org |
 | **git** | `git --version` prints a version | Install from https://git-scm.com. Claude Code uses it to download plugins |
 | A **web browser** with WebGL | Any recent Chrome, Edge, Firefox or Safari. Chrome and Edge were tested | Update your browser, or turn on hardware acceleration in its settings |
 
@@ -358,7 +358,7 @@ node --version
 git --version
 ```
 
-Node.js must be version 18 or newer. If something is missing, tell the user how to install it (Node.js: https://nodejs.org, git: https://git-scm.com). **Do not install system software or change system settings without asking.**
+Node.js must be version 22 or newer. If something is missing, tell the user how to install it (Node.js: https://nodejs.org, git: https://git-scm.com). **Do not install system software or change system settings without asking.**
 
 **Step 3. Install.** Run these two commands. Use the default `user` scope unless the user asks for `--scope project` or `--scope local`.
 
@@ -424,7 +424,7 @@ The first should return JSON containing `"name":"claude-code-isan"`. The second 
         └────────────────────────────────────────┘
 ```
 
-1. **Hooks.** `hooks/hooks.json` registers the hook program for `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` and `Stop`. All are asynchronous.
+1. **Hooks.** `hooks/hooks.json` registers the hook program for `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` and `Stop`. All are asynchronous.
 2. **Starting the server.** The first time a hook runs and finds no server, it starts one in the background (`packages/core/src/daemon.js`) and records its port in `~/.claude-code-isan/server.json`. One server is shared by all conversations. Port 3737 is preferred; if it is busy a free port is used.
 3. **State.** The server keeps one small state object per conversation: which of the four people are busy with which tool, when the task started and ended, and token totals. A new prompt starts a fresh task for that conversation.
 4. **The page.** The browser opens a live stream (server-sent events) and redraws the scene whenever the state changes. The team lead's walking is animation built from the state changes in the browser.

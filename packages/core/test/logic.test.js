@@ -119,6 +119,40 @@ test('the scout thinks while no tool is busy during a turn', () => {
   assert.ok(Object.values(s.sessions.a.roles).every((r) => r.state !== 'working'));
 });
 
+test('a tool waiting for permission is flagged until it finishes', () => {
+  const pending = normalizeHook({
+    hook_event_name: 'PermissionRequest',
+    session_id: 'a',
+    tool_name: 'Bash',
+    tool_input: { command: 'npm test' },
+    permission_suggestions: [{ type: 'addRules' }],
+  });
+  assert.deepEqual(pending, { event: 'PermissionRequest', session_id: 'a', tool: 'Bash', command: 'npm test' });
+
+  let s = createState();
+  const send = (ev) => {
+    s = reduce(s, { session_id: 'a', ...ev });
+  };
+  send({ event: 'UserPromptSubmit' });
+  send({ event: 'PreToolUse', tool: 'Bash', command: 'npm test' });
+  send(pending);
+  assert.deepEqual([s.sessions.a.roles.Tester.state, s.sessions.a.roles.Tester.approval], ['working', true]);
+  assert.equal(s.sessions.a.roles.Tester.running, 1);
+  send({ event: 'PostToolUse', tool: 'Bash', command: 'npm test' });
+  assert.deepEqual([s.sessions.a.roles.Tester.state, s.sessions.a.roles.Tester.approval], ['waiting', false]);
+
+  // A lost PreToolUse still shows the request, and the end of the turn clears it.
+  send({ event: 'PermissionRequest', tool: 'Write', path: 'a.js' });
+  assert.deepEqual([s.sessions.a.roles.Dev.state, s.sessions.a.roles.Dev.tool, s.sessions.a.roles.Dev.approval], ['working', 'Write', true]);
+  send({ event: 'Stop' });
+  assert.ok(Object.values(s.sessions.a.roles).every((r) => !r.approval));
+
+  // Tools without a role are ignored.
+  const before = JSON.stringify(s);
+  send({ event: 'PermissionRequest', tool: 'TodoWrite' });
+  assert.equal(JSON.stringify(s), before);
+});
+
 test('overlapping tools of one role stay busy until the last one finishes', () => {
   let s = createState();
   const send = (ev) => {

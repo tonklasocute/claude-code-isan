@@ -23,7 +23,7 @@ function openBrowser(url) {
 
 const info = await ensureServer({ wait: 8000 });
 if (!info) {
-  console.log('Claude Code Isan could not start its local server. Make sure Node.js 18 or newer is installed, then try again.');
+  console.log('Claude Code Isan could not start its local server. Make sure Node.js 22 or newer is installed, then try again.');
   process.exit(1);
 }
 

@@ -752,7 +752,7 @@ function drawBoard() {
     const detail = r.state === 'working' ? `${r.tool}${r.detail ? ` · ${r.detail}` : ''}` : r.state === 'done' || r.done ? 'Finished' : 'Waiting for task';
     g.fillText(truncate(detail, 34), 60, y + 62);
 
-    const chip = r.state === 'working' ? ['DOING', role.css] : r.state === 'done' || r.done ? ['DONE', '#3fbf74'] : ['TO DO', '#9aa0ab'];
+    const chip = r.approval ? ['APPROVAL', '#d99a00'] : r.state === 'working' ? ['DOING', role.css] : r.state === 'done' || r.done ? ['DONE', '#3fbf74'] : ['TO DO', '#9aa0ab'];
     g.fillStyle = chip[1];
     g.beginPath();
     g.roundRect(BOARD_W - 190, y + 22, 140, 40, 20);
@@ -1009,6 +1009,7 @@ function roleState(id) {
 const isFinished = (r) => r.done || r.state === 'done';
 
 function tagText(role, r) {
+  if (r.approval) return `${role.id} · Needs approval · ${r.tool}`;
   if (r.state === 'working') return `${role.id} · Working · ${r.tool}`;
   if (r.state === 'done') return `${role.id} · Done`;
   return `${role.id} · Waiting`;
@@ -1052,9 +1053,10 @@ function applyState() {
     const r = roleState(step.dataset.role);
     const finished = isFinished(r);
     step.classList.toggle('working', r.state === 'working');
+    step.classList.toggle('approval', Boolean(r.approval));
     step.classList.toggle('done', finished);
     step.querySelector('.state').textContent =
-      r.state === 'working' ? `Working · ${r.tool}` : finished ? 'Done' : 'Waiting';
+      r.approval ? `Needs approval · ${r.tool}` : r.state === 'working' ? `Working · ${r.tool}` : finished ? 'Done' : 'Waiting';
   }
 
   const finishedCount = ROLES.filter((role) => isFinished(roleState(role.id))).length;

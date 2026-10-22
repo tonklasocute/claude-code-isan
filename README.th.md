@@ -40,7 +40,7 @@
 <a id="s1"></a>
 ## 1. สรุปใน 60 วินาที
 
-ต้องมี Claude Code, Node.js 18 ขึ้นไป และ git จากนั้นพิมพ์ในเทอร์มินัล:
+ต้องมี Claude Code, Node.js 22 ขึ้นไป และ git จากนั้นพิมพ์ในเทอร์มินัล:
 
 ```
 claude plugin marketplace add tonklasocute/claude-code-isan
@@ -80,7 +80,7 @@ http://127.0.0.1:3737/
 | ต้องมี | วิธีเช็ก | ถ้ายังไม่มี |
 |---|---|---|
 | **Claude Code** ล็อกอินและใช้งานได้ | `claude --version` แสดงเลขเวอร์ชัน (ทดสอบกับ 2.1.269) | ติดตั้งตามเอกสารทางการของ Claude Code |
-| **Node.js 18 ขึ้นไป** | `node --version` ขึ้น `v18` หรือสูงกว่า | ติดตั้งรุ่น LTS จาก https://nodejs.org |
+| **Node.js 22 ขึ้นไป** | `node --version` ขึ้น `v22` หรือสูงกว่า | ติดตั้งรุ่น LTS จาก https://nodejs.org |
 | **git** | `git --version` แสดงเลขเวอร์ชัน | ติดตั้งจาก https://git-scm.com (Claude Code ใช้ git ดาวน์โหลด plugin) |
 | **เบราว์เซอร์**ที่รองรับ WebGL | Chrome, Edge, Firefox หรือ Safari รุ่นใหม่ (ทดสอบกับ Chrome และ Edge) | อัปเดตเบราว์เซอร์ หรือเปิด hardware acceleration ในการตั้งค่า |
 
@@ -369,7 +369,7 @@ node --version
 git --version
 ```
 
-Node.js ต้องเป็นเวอร์ชัน 18 ขึ้นไป ถ้าขาดอะไร ให้บอกผู้ใช้วิธีติดตั้ง (Node.js: https://nodejs.org, git: https://git-scm.com) **ห้ามติดตั้งซอฟต์แวร์ระบบหรือเปลี่ยนการตั้งค่าระบบโดยไม่ถามก่อน**
+Node.js ต้องเป็นเวอร์ชัน 22 ขึ้นไป ถ้าขาดอะไร ให้บอกผู้ใช้วิธีติดตั้ง (Node.js: https://nodejs.org, git: https://git-scm.com) **ห้ามติดตั้งซอฟต์แวร์ระบบหรือเปลี่ยนการตั้งค่าระบบโดยไม่ถามก่อน**
 
 **ขั้น 3: ติดตั้ง** รันสองคำสั่งนี้ ใช้ขอบเขต `user` ตามค่าเริ่มต้น เว้นแต่ผู้ใช้ขอ `--scope project` หรือ `--scope local`
 
@@ -438,7 +438,7 @@ curl -s http://127.0.0.1:3737/debug/events
 
 อ่านจากซ้ายไปขวา: Claude Code ส่งเหตุการณ์ให้โปรแกรม hook ซึ่งตัดทอนแล้วส่งไปยังเซิร์ฟเวอร์ในเครื่อง จากนั้นเซิร์ฟเวอร์ส่งสถานะสดไปให้เบราว์เซอร์ที่วาดฉาก เซิร์ฟเวอร์ยังอ่านตัวเลขการใช้ token จากไฟล์บันทึกของ Claude ด้วย (ลูกศรด้านล่าง)
 
-1. **Hooks** `hooks/hooks.json` ลงทะเบียนโปรแกรม hook สำหรับ `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` และ `Stop` ทั้งหมดเป็นแบบ asynchronous
+1. **Hooks** `hooks/hooks.json` ลงทะเบียนโปรแกรม hook สำหรับ `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` และ `Stop` ทั้งหมดเป็นแบบ asynchronous
 2. **การเริ่ม server** ครั้งแรกที่ hook ทำงานแล้วไม่พบ server มันจะเริ่ม server เบื้องหลัง (`packages/core/src/daemon.js`) และบันทึกพอร์ตไว้ใน `~/.claude-code-isan/server.json` server ตัวเดียวใช้ร่วมกันทุกบทสนทนา ใช้พอร์ต 3737 ก่อน ถ้าไม่ว่างจะใช้พอร์ตว่างอื่น
 3. **สถานะ** server เก็บสถานะเล็กๆ หนึ่งก้อนต่อหนึ่งบทสนทนา: ใครกำลังยุ่งกับ tool อะไร งานเริ่มและจบเมื่อไร และยอด token พรอมต์ใหม่เริ่มงานใหม่ของบทสนทนานั้น
 4. **หน้าเว็บ** เบราว์เซอร์เปิดสตรีมสด (server-sent events) แล้ววาดฉากใหม่ทุกครั้งที่สถานะเปลี่ยน การเดินของหัวหน้าเป็นแอนิเมชันที่สร้างจากการเปลี่ยนสถานะในเบราว์เซอร์

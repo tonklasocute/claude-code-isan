@@ -17,6 +17,7 @@ const script = [
   { event: 'PostToolUse', tool: 'Edit' },
   { event: 'SubagentStop', role: 'Dev' },
   { event: 'PreToolUse', tool: 'Bash', command: 'npm test' },
+  { event: 'PermissionRequest', tool: 'Bash', command: 'npm test' },
   { event: 'PostToolUse', tool: 'Bash', command: 'npm test' },
   { event: 'Stop' },
 ];

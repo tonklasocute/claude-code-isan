@@ -41,6 +41,7 @@ Hook → event mapping (to be confirmed against the docs):
 |---|---|
 | `UserPromptSubmit` | New task starts; SA begins reading the question |
 | `PreToolUse` | A tool starts; the matching character becomes "working" |
+| `PermissionRequest` | The tool waits for the user to allow it; its step shows "Needs approval" |
 | `PostToolUse` | Tool finished; character returns to idle or moves on |
 | `SubagentStop` | A subagent finished; its character shows a done tick |
 | `Stop` | Turn finished; Summary writes the answer, then done |
@@ -111,7 +112,7 @@ claude-code-isan/
 
 - **Plugin layout**: the repo root is both the marketplace and the plugin (`source: "."`), with `hooks/hooks.json`, `commands/office.md` and `scripts/` at the root and the engine in `packages/core/`. There is no separate `plugin/` folder. The command is `/claude-code-isan:office`; Claude Code always prefixes the plugin name.
 - **No npm and no `npm install`**: distribution is the GitHub marketplace only (step 1 of section 7 is dropped). The few three.js files the scene needs are committed under `packages/core/public/vendor/`.
-- **Hooks**: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` and `Stop`, all `async`, run through `node` in exec form. The hook script redacts the payload before sending it.
+- **Hooks**: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` and `Stop`, all `async`, run through `node` in exec form. The hook script redacts the payload before sending it.
 - **Background server**: started on demand by the hook or open script, shared by all sessions, found through `~/.claude-code-isan/server.json`, port 3737 preferred with a free-port fallback, exits after an hour idle.
 - **Tokens**: the transcript format is not documented (Claude Code calls it internal), so parsing is defensive. One message can span several transcript lines with the same usage, so usage is counted once per `message.id`. Shown per task, with the cache breakdown in a tooltip.
 - **Sessions**: kept separate by `session_id`; the page has a Session picker when more than one exists.

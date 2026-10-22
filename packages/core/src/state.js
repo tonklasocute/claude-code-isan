@@ -3,10 +3,12 @@ import { ROLES, roleForTool, roleForAgentType } from './rules.js';
 // The reducer turns generic events into a state snapshot.
 // Hook payloads are mapped to this shape by adapter.js.
 //
-// event: SessionStart | UserPromptSubmit | PreToolUse | PostToolUse | SubagentStop | Stop
+// event: SessionStart | UserPromptSubmit | PreToolUse | PermissionRequest | PostToolUse | SubagentStop | Stop
 // fields: session_id, cwd, tool, command, path, subagent_type, agent_type, role
+//
+// A role's `approval` is true while its tool waits for the user to allow it.
 
-const idleRole = () => ({ state: 'waiting', tool: null, detail: null, done: false, running: 0 });
+const idleRole = () => ({ state: 'waiting', tool: null, detail: null, done: false, running: 0, approval: false });
 
 function newSession() {
   const roles = Object.fromEntries(ROLES.map((role) => [role, idleRole()]));
@@ -28,7 +30,7 @@ export function expireStale(state, now = Date.now()) {
     for (const role of ROLES) {
       const r = session.roles[role];
       if (r.state === 'working') {
-        session.roles[role] = { ...r, state: 'waiting', tool: null, detail: null, running: 0 };
+        session.roles[role] = { ...r, state: 'waiting', tool: null, detail: null, running: 0, approval: false };
         changed = true;
       }
     }
@@ -50,7 +52,7 @@ export function pruneSessions(state, keep = 12) {
 function keepSomeoneBusy(session) {
   if (!session.startedAt || session.endedAt) return;
   if (Object.values(session.roles).some((r) => r.state === 'working')) return;
-  session.roles.SA = { state: 'working', tool: 'Thinking', detail: null, done: session.roles.SA.done, running: 0 };
+  session.roles.SA = { ...idleRole(), state: 'working', tool: 'Thinking', done: session.roles.SA.done };
 }
 
 export function reduce(state, ev) {
@@ -65,7 +67,7 @@ export function reduce(state, ev) {
       const fresh = newSession();
       fresh.cwd = session.cwd;
       fresh.startedAt = now;
-      fresh.roles.SA = { state: 'working', tool: 'Reading prompt', detail: null, done: false, running: 1 };
+      fresh.roles.SA = { ...idleRole(), state: 'working', tool: 'Reading prompt', running: 1 };
       session = fresh;
       break;
     }
@@ -88,10 +90,21 @@ export function reduce(state, ev) {
       }
       break;
     }
+    case 'PermissionRequest': {
+      // PreToolUse already marked the role as working; now its tool waits for the user.
+      const role = roleForTool(ev.tool, ev.command, ev.subagent_type);
+      if (!role) return state;
+      const r = session.roles[role];
+      session.roles[role] =
+        r.state === 'working'
+          ? { ...r, approval: true }
+          : { ...r, state: 'working', tool: ev.tool, detail: ev.command ?? ev.path ?? null, running: 1, approval: true };
+      break;
+    }
     case 'PostToolUse': {
       const role = roleForTool(ev.tool, ev.command, ev.subagent_type);
       if (role && session.roles[role].state === 'working') {
-        const r = session.roles[role];
+        const r = { ...session.roles[role], approval: false };
         const running = Math.max(0, (r.running ?? 1) - 1);
         // Several tools of one role can overlap: stay busy until the last one reports back.
         session.roles[role] = running > 0 ? { ...r, running } : { ...r, state: 'waiting', tool: null, detail: null, running: 0 };
@@ -101,7 +114,7 @@ export function reduce(state, ev) {
     }
     case 'SubagentStop': {
       const role = ev.role ?? roleForAgentType(ev.agent_type);
-      session.roles[role] = { ...session.roles[role], state: 'waiting', tool: null, detail: null, done: true, running: 0 };
+      session.roles[role] = { ...session.roles[role], state: 'waiting', tool: null, detail: null, done: true, running: 0, approval: false };
       keepSomeoneBusy(session);
       break;
     }
@@ -109,9 +122,9 @@ export function reduce(state, ev) {
       // The turn is over: nobody is working any more, and the summary writer is done.
       for (const role of ROLES) {
         const r = session.roles[role];
-        session.roles[role] = { ...r, state: 'waiting', tool: null, detail: null, running: 0 };
+        session.roles[role] = { ...r, state: 'waiting', tool: null, detail: null, running: 0, approval: false };
       }
-      session.roles.Summary = { state: 'done', tool: null, detail: null, done: true, running: 0 };
+      session.roles.Summary = { ...idleRole(), state: 'done', done: true };
       session.endedAt = now;
       break;
     }

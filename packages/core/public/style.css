@@ -9,6 +9,7 @@
   --tester: #ef8a2e;
   --summary: #e0559a;
   --done: #2e9e5b;
+  --approval: #b7791f;
 }
 
 :root:not([data-theme="light"]) {
@@ -23,6 +24,7 @@
     --panel: rgba(30, 31, 36, 0.85);
     --border: #33353c;
     --done: #3fbf74;
+    --approval: #e0a84a;
   }
 }
 
@@ -100,6 +102,24 @@ body {
 
 .step.working { border-color: currentColor; }
 .step.done .state { color: var(--done); }
+
+/* The tool is waiting for the user to allow it in Claude Code. */
+.step.approval {
+  border-style: dashed;
+  animation: approval-pulse 1.2s ease-in-out infinite;
+}
+.step.approval .state {
+  color: var(--approval);
+  font-weight: 600;
+}
+
+@keyframes approval-pulse {
+  50% { border-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step.approval { animation: none; }
+}
 
 .step[data-role="SA"] { color: var(--sa); }
 .step[data-role="Dev"] { color: var(--dev); }

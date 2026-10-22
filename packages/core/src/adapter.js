@@ -6,6 +6,7 @@ const EVENT_NAMES = {
   SessionStart: 'SessionStart',
   UserPromptSubmit: 'UserPromptSubmit',
   PreToolUse: 'PreToolUse',
+  PermissionRequest: 'PermissionRequest',
   PostToolUse: 'PostToolUse',
   PostToolUseFailure: 'PostToolUse',
   SubagentStop: 'SubagentStop',
@@ -48,7 +49,7 @@ export function normalizeHook(raw) {
   if (typeof raw.transcript_path === 'string') ev.transcript_path = raw.transcript_path;
   if (typeof raw.cwd === 'string') ev.cwd = raw.cwd;
 
-  if (event === 'PreToolUse' || event === 'PostToolUse') {
+  if (event === 'PreToolUse' || event === 'PermissionRequest' || event === 'PostToolUse') {
     ev.tool = typeof raw.tool_name === 'string' ? raw.tool_name : undefined;
     const input = raw.tool_input && typeof raw.tool_input === 'object' ? raw.tool_input : {};
     Object.assign(ev, describeTool(ev.tool, input));
