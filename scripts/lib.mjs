@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 export const daemonFile = path.resolve(here, '..', 'packages', 'core', 'src', 'daemon.js');
-export const dataDir = path.join(os.homedir(), '.claude-code-3d');
+export const dataDir = path.join(os.homedir(), '.claude-code-isan');
 const infoFile = path.join(dataDir, 'server.json');
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,7 +24,7 @@ export function readInfo() {
 export async function health(port, timeout = 500) {
   try {
     const res = await fetch(`http://127.0.0.1:${port}/health`, { signal: AbortSignal.timeout(timeout) });
-    return (await res.json()).name === 'claude-code-3d';
+    return (await res.json()).name === 'claude-code-isan';
   } catch {
     return false;
   }

@@ -139,7 +139,7 @@ test('static files are served and cannot escape the public folder', async () => 
   try {
     const page = await request(port, { route: '/' });
     assert.equal(page.status, 200);
-    assert.match(page.text, /Claude Code 3D/);
+    assert.match(page.text, /Claude Code Isan/);
     assert.equal((await request(port, { route: '/vendor/three.module.js' })).status, 200);
     assert.equal((await request(port, { route: '/vendor/addons/geometries/RoundedBoxGeometry.js' })).status, 200);
     // Encoded slashes are decoded and rejected. Encoded dots are collapsed by the URL parser first, so the
@@ -148,7 +148,7 @@ test('static files are served and cannot escape the public folder', async () => 
     assert.equal((await request(port, { route: '/..%2F..%2Fsrc%2Fserver.js' })).status, 403);
     const dots = await request(port, { route: '/%2e%2e/%2e%2e/package.json' });
     assert.equal(dots.status, 404);
-    assert.ok(!dots.text.includes('claude-code-3d'));
+    assert.ok(!dots.text.includes('claude-code-isan'));
     assert.equal((await request(port, { route: '/nope.js' })).status, 404);
   } finally {
     await close();

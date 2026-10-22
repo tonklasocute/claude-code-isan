@@ -177,7 +177,7 @@ export function startServer({ port = 0, preferredPort = null, idleExitMs = 0, on
     }
 
     if (req.method === 'GET' && url.pathname === '/health') {
-      send(res, 200, JSON.stringify({ ok: true, name: 'claude-code-3d', pid: process.pid, port: actualPort }));
+      send(res, 200, JSON.stringify({ ok: true, name: 'claude-code-isan', pid: process.pid, port: actualPort }));
       return;
     }
 

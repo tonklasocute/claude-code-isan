@@ -15,6 +15,6 @@ export function openBrowser(url) {
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const noOpen = process.argv.includes('--no-open');
   const { url } = await startServer({ preferredPort: 3737 });
-  console.log(`claude-code-3d running at ${url}`);
+  console.log(`claude-code-isan running at ${url}`);
   if (!noOpen) openBrowser(url);
 }

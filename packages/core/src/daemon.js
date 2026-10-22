@@ -1,14 +1,14 @@
 // Runs the server in the background so every Claude Code session on this machine shares one scene.
 // Started on demand by the hook script and by the open script, never by hand.
 //
-// Discovery: ~/.claude-code-3d/server.json holds the port. A lock file stops two starters racing.
+// Discovery: ~/.claude-code-isan/server.json holds the port. A lock file stops two starters racing.
 // The server exits by itself after an hour with no events and no open pages.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { startServer } from './server.js';
 
-const dataDir = path.join(os.homedir(), '.claude-code-3d');
+const dataDir = path.join(os.homedir(), '.claude-code-isan');
 const infoFile = path.join(dataDir, 'server.json');
 const lockFile = path.join(dataDir, 'server.lock');
 const LOCK_STALE_MS = 15000;
@@ -28,7 +28,7 @@ function pidAlive(pid) {
 async function serverAnswers(port) {
   try {
     const res = await fetch(`http://127.0.0.1:${port}/health`, { signal: AbortSignal.timeout(600) });
-    return (await res.json()).name === 'claude-code-3d';
+    return (await res.json()).name === 'claude-code-isan';
   } catch {
     return false;
   }

@@ -1,4 +1,4 @@
-# claude-code-3d — Spec
+# claude-code-isan — Spec
 
 A 3D "office" that shows what Claude Code is doing in real time. Characters (SA / Dev / Tester / Summary) react to Claude Code events. Runs in a browser first; later wrapped as a Claude Code plugin and a VS Code extension.
 
@@ -69,9 +69,9 @@ Every event carries `session_id`. Multiple sessions = multiple offices (or tabs)
 
 ## 7. Distribution (in this order)
 
-1. **Standalone core**: `npx claude-code-3d` starts the server and opens the page. Needs an npm account.
+1. **Standalone core**: `npx claude-code-isan` starts the server and opens the page. Needs an npm account.
 2. **Claude Code plugin**: GitHub repo with plugin manifest + `hooks` + `/office` command. Install via `/plugin marketplace add <user>/<repo>`. Needs only a GitHub account.
-3. **VS Code extension**: webview wrapper, commands `Claude Code 3D: Open` and `Install Hooks`. Local `.vsix` first; Marketplace later (own publisher, not shared with other projects).
+3. **VS Code extension**: webview wrapper, commands `Claude Code Isan: Open` and `Install Hooks`. Local `.vsix` first; Marketplace later (own publisher, not shared with other projects).
 
 ## 8. Safety and privacy
 
@@ -83,7 +83,7 @@ Every event carries `session_id`. Multiple sessions = multiple offices (or tabs)
 ## 9. Proposed layout
 
 ```
-claude-code-3d/
+claude-code-isan/
 ├─ spec.md
 ├─ packages/core/     # server + web UI (npm package)
 ├─ plugin/            # Claude Code plugin: hooks + /office
@@ -100,7 +100,7 @@ claude-code-3d/
 
 ## 11. Open questions
 
-- Project name availability on GitHub (`claude-code-3d`): still open, check before publishing. npm is no longer needed.
+- Project name availability on GitHub (`claude-code-isan`): still open, check before publishing. npm is no longer needed.
 - ~~Exact hook payload fields and plugin manifest format~~ Resolved: see section 12.
 - ~~Parallel subagents~~ Resolved: folded into the four roles by keywords in the agent type or description; unknown goes to Dev.
 - ~~Art style~~ Resolved: low-poly primitives with three switchable themes (samurai, office, Isan farmer).
@@ -109,10 +109,10 @@ claude-code-3d/
 
 ## 12. What changed from the plan
 
-- **Plugin layout**: the repo root is both the marketplace and the plugin (`source: "."`), with `hooks/hooks.json`, `commands/office.md` and `scripts/` at the root and the engine in `packages/core/`. There is no separate `plugin/` folder. The command is `/claude-code-3d:office`; Claude Code always prefixes the plugin name.
+- **Plugin layout**: the repo root is both the marketplace and the plugin (`source: "."`), with `hooks/hooks.json`, `commands/office.md` and `scripts/` at the root and the engine in `packages/core/`. There is no separate `plugin/` folder. The command is `/claude-code-isan:office`; Claude Code always prefixes the plugin name.
 - **No npm and no `npm install`**: distribution is the GitHub marketplace only (step 1 of section 7 is dropped). The few three.js files the scene needs are committed under `packages/core/public/vendor/`.
 - **Hooks**: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` and `Stop`, all `async`, run through `node` in exec form. The hook script redacts the payload before sending it.
-- **Background server**: started on demand by the hook or open script, shared by all sessions, found through `~/.claude-code-3d/server.json`, port 3737 preferred with a free-port fallback, exits after an hour idle.
+- **Background server**: started on demand by the hook or open script, shared by all sessions, found through `~/.claude-code-isan/server.json`, port 3737 preferred with a free-port fallback, exits after an hour idle.
 - **Tokens**: the transcript format is not documented (Claude Code calls it internal), so parsing is defensive. One message can span several transcript lines with the same usage, so usage is counted once per `message.id`. Shown per task, with the cache breakdown in a tooltip.
 - **Sessions**: kept separate by `session_id`; the page has a Session picker when more than one exists.
 - **Added**: a team lead who walks to each worker, three themes with a theme picker, Host and Origin checks on the local server.

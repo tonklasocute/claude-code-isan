@@ -1,5 +1,5 @@
 ---
-description: Open the Claude Code 3D office in your browser (options: --theme=samurai|office|isan, --no-open)
+description: Open the Claude Code Isan office in your browser (options: --theme=samurai|office|isan, --no-open)
 allowed-tools: Bash(node:*)
 ---
 

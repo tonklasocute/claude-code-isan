@@ -1,5 +1,5 @@
 {
-  "name": "claude-code-3d",
+  "name": "claude-code-isan",
   "version": "0.1.0",
   "description": "3D office that shows what Claude Code is doing in real time",
   "private": true,

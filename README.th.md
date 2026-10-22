@@ -1,4 +1,6 @@
-# Claude Code 3D
+# Claude Code Isan
+
+> สำเนาดัดแปลงจาก [claude-code-3d](https://github.com/thekaroe-thailand/claude-code-3d) ของ kob ai (MIT) เวอร์ชันนี้เปลี่ยนชื่อ plugin ไม่ให้ชนกับต้นฉบับ และใช้ธีมชาวนาอีสานเป็นค่าเริ่มต้น
 
 **ดูว่า Claude Code กำลังทำอะไรอยู่ เป็นฉาก 3D แบบสดๆ**
 หัวหน้าทีมเดินจ่ายงานให้ผู้สอดแนม นักพัฒนา ผู้ทดสอบ และผู้สรุป พร้อมตัวจับเวลาและตัวนับ token อยู่ด้านล่าง
@@ -41,8 +43,8 @@
 ต้องมี Claude Code, Node.js 18 ขึ้นไป และ git จากนั้นพิมพ์ในเทอร์มินัล:
 
 ```
-claude plugin marketplace add thekaroe-thailand/claude-code-3d
-claude plugin install claude-code-3d@claude-code-3d
+claude plugin marketplace add tonklasocute/claude-code-isan
+claude plugin install claude-code-isan@claude-code-isan
 ```
 
 แล้ว**เริ่มบทสนทนา Claude Code ใหม่** (plugin โหลดตอนเริ่มบทสนทนา) สั่ง Claude ให้ทำอะไรที่ใช้ tool เช่น "อ่านไฟล์ README.md แล้วสรุปให้หน่อย" แล้วเปิดที่อยู่นี้ในเบราว์เซอร์:
@@ -100,8 +102,8 @@ http://127.0.0.1:3737/
 เปิดเทอร์มินัลใดก็ได้ แล้วรัน:
 
 ```
-claude plugin marketplace add thekaroe-thailand/claude-code-3d
-claude plugin install claude-code-3d@claude-code-3d
+claude plugin marketplace add tonklasocute/claude-code-isan
+claude plugin install claude-code-isan@claude-code-isan
 ```
 
 ควรเห็นข้อความ "Successfully added marketplace" และ "Successfully installed plugin" ตรวจสอบ:
@@ -110,7 +112,7 @@ claude plugin install claude-code-3d@claude-code-3d
 claude plugin list
 ```
 
-ควรเห็น `claude-code-3d@claude-code-3d` เวอร์ชัน `Scope: user` และ `Status: enabled`
+ควรเห็น `claude-code-isan@claude-code-isan` เวอร์ชัน `Scope: user` และ `Status: enabled`
 
 พิมพ์คำสั่งเดียวกันในเซสชันเทอร์มินัลของ Claude Code ก็ได้ เป็น `/plugin marketplace add ...` และ `/plugin install ...`
 
@@ -121,7 +123,7 @@ claude plugin list
 **พิมพ์ `/plugin ...` ในช่องแชทของ VS Code ใช้ไม่ได้** มันตอบว่า "/plugin isn't available in this environment" ให้ใช้อย่างใดอย่างหนึ่งนี้แทน:
 
 1. **แนะนำ:** เปิดเทอร์มินัลของ VS Code เอง (เมนู *Terminal → New Terminal*) แล้วรันสองคำสั่งจากวิธี A plugin และ marketplace ใช้ร่วมกันระหว่างเครื่องมือเทอร์มินัลกับส่วนขยาย VS Code จากนั้นกด `Ctrl+Shift+P` พิมพ์ `Reload Window` กด Enter แล้วเปิด**แชทใหม่**
-2. หรือพิมพ์ `/plugins` (มี **s** ท้าย) ในช่องแชท ตามเอกสารของ Claude Code จะเปิดแผง "Manage plugins" ที่มีแท็บ Marketplaces (เพิ่ม `thekaroe-thailand/claude-code-3d`) และแท็บ Plugins (ติดตั้ง) เรายังไม่ได้ทดสอบแผงนี้เอง
+2. หรือพิมพ์ `/plugins` (มี **s** ท้าย) ในช่องแชท ตามเอกสารของ Claude Code จะเปิดแผง "Manage plugins" ที่มีแท็บ Marketplaces (เพิ่ม `tonklasocute/claude-code-isan`) และแท็บ Plugins (ติดตั้ง) เรายังไม่ได้ทดสอบแผงนี้เอง
 
 ### วิธี C: ลองก่อนโดยไม่ติดตั้ง
 
@@ -256,7 +258,7 @@ Claude Code ──(hook บนเครื่องคุณ)──► เว็
 
 ### เก็บอะไรลงดิสก์
 
-โฟลเดอร์เดียว `~/.claude-code-3d/` (บน Windows คือ `C:\Users\<ชื่อคุณ>\.claude-code-3d\`) ซึ่งมีไฟล์ `server.json` เล็กๆ (หมายเลขพอร์ตและรหัส process) ขณะ server ทำงาน ถ้าเปิดโหมด debug (ดู [แก้ปัญหา](#s8)) จะมี `hook.log` ด้วย
+โฟลเดอร์เดียว `~/.claude-code-isan/` (บน Windows คือ `C:\Users\<ชื่อคุณ>\.claude-code-isan\`) ซึ่งมีไฟล์ `server.json` เล็กๆ (หมายเลขพอร์ตและรหัส process) ขณะ server ทำงาน ถ้าเปิดโหมด debug (ดู [แก้ปัญหา](#s8)) จะมี `hook.log` ด้วย
 
 ---
 
@@ -269,21 +271,21 @@ Claude Code ──(hook บนเครื่องคุณ)──► เว็
 |---|---|---|
 | พิมพ์ `/plugin ...` ใน**แชท VS Code** แล้วขึ้น "/plugin isn't available in this environment" | ช่องแชทนั้นไม่มีคำสั่งนี้ | ใช้**เทอร์มินัล**ของ VS Code รัน `claude plugin ...` ([ติดตั้ง วิธี B](#s4)) หรือพิมพ์ `/plugins` |
 | หน้าเว็บเปิดแต่**ไม่มีอะไรขยับ** | อยู่ในบทสนทนาที่เริ่มก่อนติดตั้ง plugin หรือรันคำสั่งในเทอร์มินัลเองแทนที่จะสั่ง Claude หรือ plugin ถูกปิดอยู่ | เริ่มบทสนทนา**ใหม่** สั่ง **Claude** ให้ทำอะไรที่ใช้ tool และเช็กว่า `claude plugin list` ขึ้น `enabled` |
-| หน้าเว็บขึ้น **"เข้าถึงไม่ได้" / "refused to connect"** | server ไม่ได้รัน มันเริ่มเมื่อบทสนทนา Claude Code เริ่ม (และเมื่อรันคำสั่งเปิดหน้า) | เริ่มบทสนทนา Claude ใหม่ ส่งข้อความ แล้วรีเฟรช เช็กว่า `node --version` เป็น 18 ขึ้นไป หรือรันโปรแกรมเปิดหน้าเอง: `node ~/.claude/plugins/cache/claude-code-3d/claude-code-3d/<เวอร์ชัน>/scripts/open.mjs` |
+| หน้าเว็บขึ้น **"เข้าถึงไม่ได้" / "refused to connect"** | server ไม่ได้รัน มันเริ่มเมื่อบทสนทนา Claude Code เริ่ม (และเมื่อรันคำสั่งเปิดหน้า) | เริ่มบทสนทนา Claude ใหม่ ส่งข้อความ แล้วรีเฟรช เช็กว่า `node --version` เป็น 18 ขึ้นไป หรือรันโปรแกรมเปิดหน้าเอง: `node ~/.claude/plugins/cache/claude-code-isan/claude-code-isan/<เวอร์ชัน>/scripts/open.mjs` |
 | `http://127.0.0.1:3737/debug/events` แสดง `[]` หลังส่งข้อความ | plugin ไม่ได้ส่ง event | แก้เหมือน "ไม่มีอะไรขยับ" แล้วลองโหมด debug ด้านล่าง |
-| **พอร์ต 3737 ไม่ว่าง** (มีโปรแกรมอื่นใช้อยู่) | server เลือกพอร์ตว่างเอง | เปิด `~/.claude-code-3d/server.json` อ่านเลข `port` แล้วใช้ `http://127.0.0.1:<พอร์ต>/` คำสั่งเปิดหน้าจะพิมพ์ที่อยู่ที่ถูกต้องให้ด้วย |
+| **พอร์ต 3737 ไม่ว่าง** (มีโปรแกรมอื่นใช้อยู่) | server เลือกพอร์ตว่างเอง | เปิด `~/.claude-code-isan/server.json` อ่านเลข `port` แล้วใช้ `http://127.0.0.1:<พอร์ต>/` คำสั่งเปิดหน้าจะพิมพ์ที่อยู่ที่ถูกต้องให้ด้วย |
 | ฉาก**ดำหรือว่างเปล่า** | WebGL ปิดอยู่ หรือหน้ากำลังโหลด (โหลดครั้งแรกใช้เวลาหนึ่งถึงสองวินาที) | รอสักครู่ ลองเบราว์เซอร์อื่น เปิด hardware acceleration ในการตั้งค่าเบราว์เซอร์ |
 | **Token ขึ้น `—`** | Claude ยังตอบไม่เสร็จสักข้อความ หรือไม่รู้จักรูปแบบไฟล์บันทึก | รอให้คำตอบแรกจบ plugin ไม่พังเพราะเรื่องนี้ แค่แสดง `—` |
 | ตัวละครดู**ค้างที่ "Working"** | รอบถูกขัดจังหวะก่อนที่ tool จะรายงานกลับ | จะหายเมื่อรอบจบ หรือหลังไม่มี event สิบนาที |
 | หัวหน้าดู**ตามหลัง** | การเดินใช้เวลา ส่วน tool มักเร็วกว่า | ปกติ แผงและสียังเป็นปัจจุบันเสมอ |
 | ฉาก**กระตุก**บนเครื่องเก่า | ฉาก 3D ละเอียด ธีมเถียงนาละเอียดที่สุด | สลับเป็นธีม**ออฟฟิศ** ปิดแท็บอื่น หรือย่อหน้าลง |
 | **"No such command" / หา `claude` ไม่เจอ** | คำสั่งของ Claude Code ไม่อยู่ใน PATH | เปิดเทอร์มินัลใหม่ หรือทำตามเอกสารติดตั้ง Claude Code เพื่อเพิ่มเข้า PATH |
-| อัปเดตแล้วดูเหมือนไม่เปลี่ยน | ต้องเริ่มบทสนทนา Claude ใหม่ | รัน `claude plugin update claude-code-3d@claude-code-3d` แล้วเริ่มบทสนทนาใหม่ |
+| อัปเดตแล้วดูเหมือนไม่เปลี่ยน | ต้องเริ่มบทสนทนา Claude ใหม่ | รัน `claude plugin update claude-code-isan@claude-code-isan` แล้วเริ่มบทสนทนาใหม่ |
 | Windows ถามว่าจะให้ **Node.js** ใช้เครือข่ายไหม | server คุยกับเครื่องคุณเองเท่านั้น | เลือกตัวเลือกที่เข้มงวดที่สุดได้ การรับส่งกับ `127.0.0.1` ปกติไม่ได้รับผลกระทบ |
 
 ### โหมด debug (แสดงข้อผิดพลาดของ hook)
 
-ตั้งตัวแปรสภาพแวดล้อม `C3D_DEBUG=1` ก่อนเปิด Claude Code ข้อผิดพลาดจะถูกเขียนลง `~/.claude-code-3d/hook.log`
+ตั้งตัวแปรสภาพแวดล้อม `C3D_DEBUG=1` ก่อนเปิด Claude Code ข้อผิดพลาดจะถูกเขียนลง `~/.claude-code-isan/hook.log`
 
 - Windows (PowerShell): `$env:C3D_DEBUG = "1"` แล้วเปิด Claude Code จากหน้าต่างเดียวกัน
 - macOS / Linux: `C3D_DEBUG=1 claude`
@@ -299,12 +301,12 @@ Claude Code ──(hook บนเครื่องคุณ)──► เว็
 
 | ต้องการ | รัน |
 |---|---|
-| **อัปเดต**เป็นเวอร์ชันล่าสุด | `claude plugin marketplace update claude-code-3d` แล้ว `claude plugin update claude-code-3d@claude-code-3d` แล้วเริ่มบทสนทนาใหม่ |
-| **ปิดชั่วคราว** (ยังติดตั้งอยู่) | `claude plugin disable claude-code-3d@claude-code-3d` (เปิดกลับด้วย `enable`) |
-| **ถอนการติดตั้ง** | `claude plugin uninstall claude-code-3d@claude-code-3d` |
-| ลบ **marketplace** ด้วย | `claude plugin marketplace remove claude-code-3d` |
-| ลบ**โฟลเดอร์ที่เหลือ** | ลบ `~/.claude-code-3d` (บน Windows คือ `C:\Users\<ชื่อคุณ>\.claude-code-3d`) |
-| **หยุด server ทันที** | จบ process ที่มีรหัสอยู่ใน `~/.claude-code-3d/server.json` มันหยุดเองหลังไม่มีกิจกรรมและไม่มีหน้าเปิดอยู่ 1 ชั่วโมงด้วย |
+| **อัปเดต**เป็นเวอร์ชันล่าสุด | `claude plugin marketplace update claude-code-isan` แล้ว `claude plugin update claude-code-isan@claude-code-isan` แล้วเริ่มบทสนทนาใหม่ |
+| **ปิดชั่วคราว** (ยังติดตั้งอยู่) | `claude plugin disable claude-code-isan@claude-code-isan` (เปิดกลับด้วย `enable`) |
+| **ถอนการติดตั้ง** | `claude plugin uninstall claude-code-isan@claude-code-isan` |
+| ลบ **marketplace** ด้วย | `claude plugin marketplace remove claude-code-isan` |
+| ลบ**โฟลเดอร์ที่เหลือ** | ลบ `~/.claude-code-isan` (บน Windows คือ `C:\Users\<ชื่อคุณ>\.claude-code-isan`) |
+| **หยุด server ทันที** | จบ process ที่มีรหัสอยู่ใน `~/.claude-code-isan/server.json` มันหยุดเองหลังไม่มีกิจกรรมและไม่มีหน้าเปิดอยู่ 1 ชั่วโมงด้วย |
 
 หลังถอนการติดตั้ง hooks จะหยุดทำงานตั้งแต่ต้นบทสนทนาถัดไป
 
@@ -372,8 +374,8 @@ Node.js ต้องเป็นเวอร์ชัน 18 ขึ้นไป �
 **ขั้น 3: ติดตั้ง** รันสองคำสั่งนี้ ใช้ขอบเขต `user` ตามค่าเริ่มต้น เว้นแต่ผู้ใช้ขอ `--scope project` หรือ `--scope local`
 
 ```
-claude plugin marketplace add thekaroe-thailand/claude-code-3d
-claude plugin install claude-code-3d@claude-code-3d
+claude plugin marketplace add tonklasocute/claude-code-isan
+claude plugin install claude-code-isan@claude-code-isan
 ```
 
 **ขั้น 4: ตรวจว่าติดตั้งแล้ว**
@@ -382,7 +384,7 @@ claude plugin install claude-code-3d@claude-code-3d
 claude plugin list
 ```
 
-ควรเห็นรายการ `claude-code-3d@claude-code-3d` ที่มี `Status: enabled` ถ้าขั้นเพิ่ม marketplace ล้มเหลว ให้แสดงข้อผิดพลาดแก่ผู้ใช้ และเช็กว่า `git --version` ใช้ได้และเข้าถึง https://github.com ได้
+ควรเห็นรายการ `claude-code-isan@claude-code-isan` ที่มี `Status: enabled` ถ้าขั้นเพิ่ม marketplace ล้มเหลว ให้แสดงข้อผิดพลาดแก่ผู้ใช้ และเช็กว่า `git --version` ใช้ได้และเข้าถึง https://github.com ได้
 
 **ขั้น 5: บอกผู้ใช้ว่าต้องทำอะไรต่อ** plugin โหลดตอนบทสนทนาเริ่ม ดังนั้นมันจะไม่ทำงานในบทสนทนาที่คุณติดตั้งให้ บอกให้เขาเริ่มบทสนทนา**ใหม่** (ใน VS Code: รัน "Developer: Reload Window" จาก command palette แล้วเปิดแชทใหม่) จากนั้นให้ข้อทดสอบจาก [หัวข้อ 5](#s5) และที่อยู่ `http://127.0.0.1:3737/`
 
@@ -393,7 +395,7 @@ curl -s http://127.0.0.1:3737/health
 curl -s http://127.0.0.1:3737/debug/events
 ```
 
-คำสั่งแรกควรได้ JSON ที่มี `"name":"claude-code-3d"` คำสั่งที่สองแสดงรายชื่อ event ที่ได้รับ ถ้า server ไม่ตอบ ให้อ่าน [แก้ปัญหา](#s8)
+คำสั่งแรกควรได้ JSON ที่มี `"name":"claude-code-isan"` คำสั่งที่สองแสดงรายชื่อ event ที่ได้รับ ถ้า server ไม่ตอบ ให้อ่าน [แก้ปัญหา](#s8)
 
 **ห้าม:**
 
@@ -403,7 +405,7 @@ curl -s http://127.0.0.1:3737/debug/events
 - ขอหรือจัดการบัญชี API key หรือ token ไม่ต้องใช้อะไรเหล่านี้
 - พิมพ์คำสั่งติดตั้งลงในแชทของผู้ใช้เหมือนเป็น slash command ในส่วนขยาย VS Code
 
-**ถอนการติดตั้งภายหลัง:** `claude plugin uninstall claude-code-3d@claude-code-3d` แล้วลบโฟลเดอร์ `~/.claude-code-3d`
+**ถอนการติดตั้งภายหลัง:** `claude plugin uninstall claude-code-isan@claude-code-isan` แล้วลบโฟลเดอร์ `~/.claude-code-isan`
 
 **ถ้าอยากตรวจโค้ดก่อนติดตั้ง** (แนะนำ โค้ดสั้น) ไฟล์ที่สำคัญคือ:
 
@@ -437,7 +439,7 @@ curl -s http://127.0.0.1:3737/debug/events
 อ่านจากซ้ายไปขวา: Claude Code ส่งเหตุการณ์ให้โปรแกรม hook ซึ่งตัดทอนแล้วส่งไปยังเซิร์ฟเวอร์ในเครื่อง จากนั้นเซิร์ฟเวอร์ส่งสถานะสดไปให้เบราว์เซอร์ที่วาดฉาก เซิร์ฟเวอร์ยังอ่านตัวเลขการใช้ token จากไฟล์บันทึกของ Claude ด้วย (ลูกศรด้านล่าง)
 
 1. **Hooks** `hooks/hooks.json` ลงทะเบียนโปรแกรม hook สำหรับ `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `SubagentStop` และ `Stop` ทั้งหมดเป็นแบบ asynchronous
-2. **การเริ่ม server** ครั้งแรกที่ hook ทำงานแล้วไม่พบ server มันจะเริ่ม server เบื้องหลัง (`packages/core/src/daemon.js`) และบันทึกพอร์ตไว้ใน `~/.claude-code-3d/server.json` server ตัวเดียวใช้ร่วมกันทุกบทสนทนา ใช้พอร์ต 3737 ก่อน ถ้าไม่ว่างจะใช้พอร์ตว่างอื่น
+2. **การเริ่ม server** ครั้งแรกที่ hook ทำงานแล้วไม่พบ server มันจะเริ่ม server เบื้องหลัง (`packages/core/src/daemon.js`) และบันทึกพอร์ตไว้ใน `~/.claude-code-isan/server.json` server ตัวเดียวใช้ร่วมกันทุกบทสนทนา ใช้พอร์ต 3737 ก่อน ถ้าไม่ว่างจะใช้พอร์ตว่างอื่น
 3. **สถานะ** server เก็บสถานะเล็กๆ หนึ่งก้อนต่อหนึ่งบทสนทนา: ใครกำลังยุ่งกับ tool อะไร งานเริ่มและจบเมื่อไร และยอด token พรอมต์ใหม่เริ่มงานใหม่ของบทสนทนานั้น
 4. **หน้าเว็บ** เบราว์เซอร์เปิดสตรีมสด (server-sent events) แล้ววาดฉากใหม่ทุกครั้งที่สถานะเปลี่ยน การเดินของหัวหน้าเป็นแอนิเมชันที่สร้างจากการเปลี่ยนสถานะในเบราว์เซอร์
 5. **Token** server อ่านไฟล์บันทึกของ Claude สำหรับบทสนทนานั้นแล้วบวกตัวเลขการใช้งาน โดยนับแต่ละข้อความครั้งเดียว (หนึ่งข้อความอาจปรากฏหลายครั้งในไฟล์) ยอดของงานคือผลต่างจากยอดรวม ณ ตอนที่ส่งพรอมต์
@@ -451,8 +453,8 @@ curl -s http://127.0.0.1:3737/debug/events
 ## 13. พัฒนาต่อและร่วมสร้าง
 
 ```
-git clone https://github.com/thekaroe-thailand/claude-code-3d.git
-cd claude-code-3d/packages/core
+git clone https://github.com/tonklasocute/claude-code-isan.git
+cd claude-code-isan/packages/core
 npm test            # เทสต์หน่วยและเทสต์รวม (ตัวรันเทสต์ในตัวของ Node)
 npm run demo        # เซสชันปลอมที่เล่นวนซ้ำที่ http://127.0.0.1:3737/
 ```
@@ -470,7 +472,7 @@ claude plugin validate .claude-plugin/plugin.json
 ```
 .claude-plugin/     ไฟล์ manifest ของ plugin และ marketplace
 hooks/hooks.json    การลงทะเบียน hook (ทั้งหมดเป็น asynchronous)
-commands/office.md  คำสั่ง /claude-code-3d:office
+commands/office.md  คำสั่ง /claude-code-isan:office
 scripts/            โปรแกรม hook โปรแกรมเปิดหน้า ตัวช่วยร่วม
 packages/core/
   src/              server, adapter, state machine, ตัวอ่าน transcript, daemon
@@ -504,6 +506,6 @@ docs/images/        ภาพหน้าจอที่ใช้ใน README �
 <a id="s15"></a>
 ## 15. สัญญาอนุญาตและเครดิต
 
-สัญญาอนุญาต MIT (ดู [LICENSE](LICENSE)) สร้างโดย kob ai
+สัญญาอนุญาต MIT (ดู [LICENSE](LICENSE)) สร้างโดย kob ai ดัดแปลงจาก [claude-code-3d](https://github.com/thekaroe-thailand/claude-code-3d) โดยสำเนานี้ยังคงประกาศลิขสิทธิ์เดิมไว้ใน LICENSE
 
 สร้างด้วย [three.js](https://threejs.org/) (MIT) ซึ่งคัดลอกไว้ใน `packages/core/public/vendor/` พร้อมไฟล์สัญญาอนุญาตของมัน

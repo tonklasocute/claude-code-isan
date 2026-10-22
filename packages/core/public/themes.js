@@ -7,9 +7,9 @@ export const THEMES = [
   { id: 'isan', label: 'ชาวนาอีสาน ยุคเก่า', module: '/app.isan.js' },
 ];
 
-export const DEFAULT_THEME = 'samurai';
-const THEME_KEY = 'claude-code-3d.theme';
-const SESSION_KEY = 'claude-code-3d.session';
+export const DEFAULT_THEME = 'isan';
+const THEME_KEY = 'claude-code-isan.theme';
+const SESSION_KEY = 'claude-code-isan.session';
 
 const isKnown = (id) => THEMES.some((theme) => theme.id === id);
 
