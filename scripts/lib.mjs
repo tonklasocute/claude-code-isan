@@ -33,7 +33,7 @@ export async function health(port, timeout = 500) {
 export async function postJson(port, route, body, timeout = 800) {
   const res = await fetch(`http://127.0.0.1:${port}${route}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-C3D-Client': '1' },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(timeout),
   });

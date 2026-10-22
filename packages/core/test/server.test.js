@@ -9,7 +9,9 @@ import { startServer } from '../src/server.js';
 // Plain http.request so the Host and Origin headers can be set freely.
 function request(port, { method = 'GET', route = '/', headers = {}, body } = {}) {
   return new Promise((resolve, reject) => {
-    const req = http.request({ host: '127.0.0.1', port, method, path: route, headers }, (res) => {
+    // Changes must carry the client header; reads do not need it.
+    const allHeaders = method === 'GET' ? headers : { 'x-c3d-client': '1', ...headers };
+    const req = http.request({ host: '127.0.0.1', port, method, path: route, headers: allHeaders }, (res) => {
       const chunks = [];
       res.on('data', (c) => chunks.push(c));
       res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, text: Buffer.concat(chunks).toString('utf8') }));
@@ -116,6 +118,17 @@ test('token totals come from the transcript, counted once per message', async ()
     if (previous === undefined) delete process.env.CLAUDE_CONFIG_DIR;
     else process.env.CLAUDE_CONFIG_DIR = previous;
     await fs.rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('changes without the client header are refused', async () => {
+  const { port, close } = await startServer();
+  try {
+    assert.equal((await request(port, { method: 'POST', route: '/reset', headers: { 'x-c3d-client': '' } })).status, 403);
+    assert.equal((await request(port, { method: 'POST', route: '/hook', body: '{}', headers: { 'x-c3d-client': '' } })).status, 403);
+    assert.equal((await request(port, { method: 'POST', route: '/reset' })).status, 200);
+  } finally {
+    await close();
   }
 });
 

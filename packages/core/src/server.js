@@ -13,6 +13,9 @@ const MAX_BODY_BYTES = 256 * 1024;
 const TICK_MS = 2000;
 // How long after a turn ends the transcript is still polled for the last responses.
 const TOKEN_GRACE_MS = 15000;
+// Every POST must carry this header. A browser page on another site cannot add it without a CORS preflight,
+// and the server never answers one, so only our own page and the hook script can send changes.
+const CLIENT_HEADER = 'x-c3d-client';
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -154,6 +157,10 @@ export function startServer({ port = 0, preferredPort = null, idleExitMs = 0, on
 
   const handle = async (req, res) => {
     if (!hostOk(req) || !originOk(req)) {
+      send(res, 403, 'forbidden', 'text/plain');
+      return;
+    }
+    if (req.method !== 'GET' && req.headers[CLIENT_HEADER] !== '1') {
       send(res, 403, 'forbidden', 'text/plain');
       return;
     }

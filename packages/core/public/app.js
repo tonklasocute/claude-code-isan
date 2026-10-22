@@ -1606,5 +1606,5 @@ source.onmessage = (msg) => {
 setInterval(updateTimer, 250);
 
 document.getElementById('reset').addEventListener('click', () => {
-  fetch('/reset', { method: 'POST' });
+  fetch('/reset', { method: 'POST', headers: { 'X-C3D-Client': '1' } });
 });

@@ -42,7 +42,7 @@ process.on('SIGTERM', shutdown);
 const post = (route, body) =>
   fetch(`${url}${route}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-C3D-Client': '1' },
     body: body ? JSON.stringify(body) : undefined,
   });
 
